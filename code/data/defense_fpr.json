@@ -1,0 +1,103 @@
+{
+  "false_positive_rate": 0.0,
+  "faulty_calls": 0,
+  "legal_calls": 18,
+  "detail": {
+    "B-01": {
+      "n_calls": 1,
+      "n_faulty": 0,
+      "blocked": [],
+      "rewritten": []
+    },
+    "B-02": {
+      "n_calls": 1,
+      "n_faulty": 0,
+      "blocked": [],
+      "rewritten": []
+    },
+    "B-03": {
+      "n_calls": 1,
+      "n_faulty": 0,
+      "blocked": [],
+      "rewritten": []
+    },
+    "B-04": {
+      "n_calls": 1,
+      "n_faulty": 0,
+      "blocked": [],
+      "rewritten": []
+    },
+    "B-05": {
+      "n_calls": 1,
+      "n_faulty": 0,
+      "blocked": [],
+      "rewritten": []
+    },
+    "B-06": {
+      "n_calls": 2,
+      "n_faulty": 0,
+      "blocked": [],
+      "rewritten": []
+    },
+    "B-07": {
+      "n_calls": 1,
+      "n_faulty": 0,
+      "blocked": [],
+      "rewritten": []
+    },
+    "B-08": {
+      "n_calls": 1,
+      "n_faulty": 0,
+      "blocked": [],
+      "rewritten": []
+    },
+    "H-01": {
+      "n_calls": 1,
+      "n_faulty": 0,
+      "blocked": [],
+      "rewritten": []
+    },
+    "H-02": {
+      "n_calls": 1,
+      "n_faulty": 0,
+      "blocked": [],
+      "rewritten": []
+    },
+    "H-03": {
+      "n_calls": 1,
+      "n_faulty": 0,
+      "blocked": [],
+      "rewritten": []
+    },
+    "H-04": {
+      "n_calls": 1,
+      "n_faulty": 0,
+      "blocked": [],
+      "rewritten": []
+    },
+    "H-05": {
+      "n_calls": 1,
+      "n_faulty": 0,
+      "blocked": [],
+      "rewritten": []
+    },
+    "H-06": {
+      "n_calls": 2,
+      "n_faulty": 0,
+      "blocked": [],
+      "rewritten": []
+    },
+    "H-07": {
+      "n_calls": 1,
+      "n_faulty": 0,
+      "blocked": [],
+      "rewritten": []
+    },
+    "H-08": {
+      "n_calls": 1,
+      "n_faulty": 0,
+      "blocked": [],
+      "rewritten": []
+    }
+  }
+}
