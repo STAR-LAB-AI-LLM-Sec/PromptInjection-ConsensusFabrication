@@ -1,0 +1,25 @@
+{
+  "workDirId": "mu2ksv40tkjdta",
+  "branch": "def-NDK0",
+  "uploaderBranch": true,
+  "githubAccount": "NDK0",
+  "displayName": "马艺华",
+  "scenario": "chatops",
+  "role": "solo_defense",
+  "userId": "4c646a21-e9b1-4cb0-94af-8553e43fb55c",
+  "version": 2,
+  "originalZipName": "chatops.zip",
+  "archivedZip": true,
+  "uploadedAt": "2026-09-15T11:15:53.564Z",
+  "files": [
+    "attack-backend.py",
+    "attack.py",
+    "dataset.py",
+    "defense-backend.py",
+    "defense.py",
+    "requirements.txt",
+    "test.py",
+    "chatops.zip"
+  ],
+  "skippedLargeFiles": []
+}
