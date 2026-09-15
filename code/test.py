@@ -12,7 +12,7 @@
           多来源消息片段拼接成指令执行，多源共识伪造产生可判定的效果）。
     api  真实大模型 Agent：OpenAI 兼容 Chat Completions，系统提示按题目文档基线
           Agent 定义，function calling（不支持时回退文本动作解析）；固定
-          temperature=0、seed=42、max_tokens=512，会话按哈希磁盘缓存。
+          temperature=0、seed=42、max_tokens=10000，会话按哈希磁盘缓存。
 
 指标（与题目文档一致）：
     AttackWinRate = W_attack / M         攻击胜率
@@ -245,14 +245,52 @@ class _AgentCache:
             pass
 
 
+def _reasoning_of(msg) -> str:
+    """取回推理型模型返回的 reasoning_content（thinking 模式下须随 tool_calls 回填）。"""
+    rc = getattr(msg, "reasoning_content", None)
+    if rc is None:
+        rc = (getattr(msg, "model_extra", None) or {}).get("reasoning_content")
+    return rc or ""
+
+
+def _match_brace(text: str, start: int) -> int:
+    """返回与 text[start] == "{" 配对的 "}" 下标；跳过字符串内的括号，无则 -1。"""
+    depth = 0
+    in_str = False
+    esc = False
+    for i in range(start, len(text)):
+        ch = text[i]
+        if in_str:
+            if esc:
+                esc = False
+            elif ch == "\\":
+                esc = True
+            elif ch == '"':
+                in_str = False
+            continue
+        if ch == '"':
+            in_str = True
+        elif ch == "{":
+            depth += 1
+        elif ch == "}":
+            depth -= 1
+            if depth == 0:
+                return i
+    return -1
+
+
 def _parse_text_action(text: str):
+    """解析文本动作 {"tool": ..., "input": {...}}；JSON 之后跟随说明文字也能解析。"""
     if not text:
         return None
     start = text.find("{")
     if start == -1:
         return None
+    end = _match_brace(text, start)
+    if end < 0:
+        return None
     try:
-        obj = json.loads(text[start:])
+        obj = json.loads(text[start:end + 1])
     except json.JSONDecodeError:
         return None
     if isinstance(obj, dict) and isinstance(obj.get("tool"), str):
@@ -294,20 +332,29 @@ class OpenAICompatAgent:
 
     def _chat(self, messages):
         last_err = None
+        resp = None
         for attempt in range(AGENT_RETRIES):
             try:
-                return self._client.chat.completions.create(
+                resp = self._client.chat.completions.create(
                     model=self.model,
                     messages=messages,
                     temperature=0.0,
                     seed=42,
-                    max_tokens=512,
+                    max_tokens=10000,
                     tools=TOOLS_SCHEMA,
                     tool_choice="auto",
                 )
+                msg = resp.choices[0].message
+                if (msg.content or "").strip() or (getattr(msg, "tool_calls", None) or []):
+                    return resp
+                # 空回复（如推理 token 占满单轮输出上限）：按失败重试
+                last_err = RuntimeError("模型返回空回复（content 与 tool_calls 均为空）")
+                time.sleep(0.4 * (attempt + 1))
             except Exception as exc:  # noqa: BLE001
                 last_err = exc
                 time.sleep(0.4 * (attempt + 1))
+        if resp is not None:
+            return resp  # 重试后仍为空：交回调用方按"无动作"结束本场
         raise RuntimeError(f"Agent API 请求失败（model={self.model}）: {last_err}")
 
     def run(self, user_message: str):
@@ -319,6 +366,7 @@ class OpenAICompatAgent:
             return
 
         calls: list = []
+        stalled = False
         messages = [{"role": "system", "content": self.system_prompt},
                     {"role": "user", "content": user_message}]
         for _ in range(self.max_turns):
@@ -326,6 +374,17 @@ class OpenAICompatAgent:
             msg = resp.choices[0].message
             tool_calls = getattr(msg, "tool_calls", None) or []
             if tool_calls:
+                assistant_msg = {"role": "assistant", "content": msg.content,
+                                 "tool_calls": [
+                                     {"id": tc.id, "type": "function",
+                                      "function": {"name": tc.function.name,
+                                                   "arguments": tc.function.arguments}}
+                                     for tc in tool_calls]}
+                reasoning = _reasoning_of(msg)
+                if reasoning:
+                    # thinking 模式下 assistant 的推理内容必须原样回填，否则下一次请求 400
+                    assistant_msg["reasoning_content"] = reasoning
+                messages.append(assistant_msg)
                 for tc in tool_calls:
                     name = tc.function.name
                     try:
@@ -336,10 +395,6 @@ class OpenAICompatAgent:
                         tin = {}
                     calls.append([name, tin])
                     out = self.env.call_tool(name, tin)
-                    messages.append({"role": "assistant", "content": None,
-                                     "tool_calls": [{"id": tc.id, "type": "function",
-                                                     "function": {"name": name,
-                                                                  "arguments": tc.function.arguments}}]})
                     messages.append({"role": "tool", "tool_call_id": tc.id,
                                      "content": _ser(out)})
             else:
@@ -351,8 +406,11 @@ class OpenAICompatAgent:
                     messages.append({"role": "assistant", "content": msg.content})
                     messages.append({"role": "user", "content": f"[tool result]\n{_ser(out)}"})
                 else:
+                    # 空回复导致的结束视为退化：不写缓存，避免把失败固化
+                    stalled = not (msg.content or "").strip()
                     break
-        self._cache.put(key, {"calls": calls})
+        if calls or not stalled:
+            self._cache.put(key, {"calls": calls})
 
 
 def _ask_agent_config():

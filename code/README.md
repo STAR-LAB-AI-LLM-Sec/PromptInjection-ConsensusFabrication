@@ -31,7 +31,7 @@ pip install -r requirements.txt
 bash run_attack.sh        # 输入 y
 ```
 
-按提示依次交互式输入 Agent Base URL / API Key / Model ID（也可用环境变量 `AGENT_BASE_URL` / `AGENT_API_KEY` / `AGENT_MODEL` 预填跳过交互）。评测固定 `temperature=0`、`seed=42`、`max_tokens=512`；系统提示按题目文档基线 Agent 定义；工具调用使用 function calling（不支持时回退文本动作解析）；会话按 (模型, 系统提示, 用户消息, 注入状态, 防御) 哈希**磁盘缓存**（`data/agent_cache/`），重复运行零额外 API 开销。
+按提示依次交互式输入 Agent Base URL / API Key / Model ID（也可用环境变量 `AGENT_BASE_URL` / `AGENT_API_KEY` / `AGENT_MODEL` 预填跳过交互）。评测固定 `temperature=0`、`seed=42`、`max_tokens=10000`（推理 token 计入该上限；512 会被推理占满并返回空 content）；系统提示按题目文档基线 Agent 定义；工具调用使用 function calling（不支持时回退文本动作解析）；会话按 (模型, 系统提示, 用户消息, 注入状态, 防御) 哈希**磁盘缓存**（`data/agent_cache/`），重复运行零额外 API 开销。
 
 > 离线模拟数值是流水线与指标正确性的参照基线；**真实大模型实测数值以脚本输出为准，随所选模型而异**。
 
