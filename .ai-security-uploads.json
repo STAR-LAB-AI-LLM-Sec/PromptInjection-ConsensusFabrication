@@ -1,0 +1,23 @@
+{
+  "workDirId": "mu2qhclu13s66c",
+  "scenario": "chatops",
+  "role": "solo_attack",
+  "version": 1,
+  "uploadedAt": "2026-09-15T13:55:14.099Z",
+  "files": [
+    "README.md",
+    "attack-backend.py",
+    "attack-blank.py",
+    "attack.py",
+    "dataset.py",
+    "defense-backend.py",
+    "defense-blank.py",
+    "defense.py",
+    "requirements.txt",
+    "run_attack.sh",
+    "run_defense.sh",
+    "test.py",
+    "chatops-atk.zip",
+    "meta.json"
+  ]
+}
