@@ -1,0 +1,4 @@
+# ChatOps 团队协作助手攻防基准（Baseline）运行依赖
+# - mock 离线模式：仅 Python 标准库（random / re / json / hashlib），无需任何第三方包
+# - api 真实大模型模式：需要 openai（OpenAI 兼容端点：OpenAI / vLLM / Ollama /v1 / LM Studio）
+openai>=1.40.0
