@@ -1,0 +1,18 @@
+{
+  "workDirId": "mu2l80vd71m9x7",
+  "branch": "def-NDK0",
+  "uploaderBranch": true,
+  "githubAccount": "NDK0",
+  "displayName": "马艺华",
+  "scenario": "chatops",
+  "role": "solo_defense",
+  "userId": "4c646a21-e9b1-4cb0-94af-8553e43fb55c",
+  "version": 4,
+  "originalZipName": "defense.py",
+  "archivedZip": false,
+  "uploadedAt": "2026-09-15T11:27:40.817Z",
+  "files": [
+    "defense.py"
+  ],
+  "skippedLargeFiles": []
+}
