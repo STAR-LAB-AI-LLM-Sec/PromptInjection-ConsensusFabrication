@@ -1,0 +1,11 @@
+{
+  "workDirId": "mu2l80vd71m9x7",
+  "scenario": "chatops",
+  "role": "solo_defense",
+  "version": 4,
+  "uploadedAt": "2026-09-15T11:28:03.814Z",
+  "files": [
+    "defense.py",
+    "meta.json"
+  ]
+}
