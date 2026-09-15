@@ -1,0 +1,18 @@
+{
+  "workDirId": "mu2jdyeo1sbsv4",
+  "branch": "atk-czm",
+  "uploaderBranch": true,
+  "githubAccount": "chang3m4n",
+  "displayName": "陈芷漫",
+  "scenario": "chatops",
+  "role": "solo_attack",
+  "userId": "343b84e8-13c8-4ffb-9d2d-564374f2ac8e",
+  "version": 1,
+  "originalZipName": "attack.py",
+  "archivedZip": false,
+  "uploadedAt": "2026-09-15T10:36:19.634Z",
+  "files": [
+    "attack.py"
+  ],
+  "skippedLargeFiles": []
+}
