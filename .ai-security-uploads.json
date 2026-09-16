@@ -1,0 +1,11 @@
+{
+  "workDirId": "mu4dgtu39r28vh",
+  "scenario": "chatops",
+  "role": "solo_attack",
+  "version": 1,
+  "uploadedAt": "2026-09-16T17:26:11.560Z",
+  "files": [
+    "attack.py",
+    "meta.json"
+  ]
+}
