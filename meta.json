@@ -1,0 +1,18 @@
+{
+  "workDirId": "mv4mzb7sygq9yt",
+  "branch": "atk-ProTon1",
+  "uploaderBranch": true,
+  "githubAccount": "M4x28",
+  "displayName": "Leo",
+  "scenario": "chatops",
+  "role": "solo_attack",
+  "userId": "8198522b-c7e6-4c06-bbc2-7ad2b7fbecc8",
+  "version": 1,
+  "originalZipName": "attack.py",
+  "archivedZip": false,
+  "uploadedAt": "2026-10-12T02:32:09.538Z",
+  "files": [
+    "attack.py"
+  ],
+  "skippedLargeFiles": []
+}
